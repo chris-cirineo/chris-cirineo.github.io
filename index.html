@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>BDO Crypto JS Encryption Tool</title>
+	<title>DigiFi Encryption Tool</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -28,13 +28,26 @@
 <!--===============================================================================================-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
         
-        <script>        
-	function convert() {
-	    var key = document.getElementById("passphrase").value;
-	    var e = document.getElementById("input").value;
-	    var isHexType = document.getElementById("encryptionTypeHex").checked;
+		<script>
+	function padString(source) {
+		var paddingChar = ' ';
+		var size = 16;
+		var padLength = size - source.length;
 
-	    var encrypted = CryptoJS.AES.encrypt(e, key);
+		for (var i = 0; i < padLength; i++) source += paddingChar;
+
+		return source;
+	}
+	function convert() {
+	    var passphrase = document.getElementById("passphrase").value;
+	    var message = document.getElementById("input").value;
+		var isHexType = document.getElementById("encryptionTypeHex").checked;
+		
+		var key = CryptoJS.enc.Hex.parse(padString(passphrase));
+		var iv = CryptoJS.enc.Hex.parse(padString(passphrase));
+		var paddedMessage = padString(message);
+
+	    var encrypted = CryptoJS.AES.encrypt(paddedMessage, key, {iv:iv});
 	    var e64 = CryptoJS.enc.Base64.parse(encrypted.toString());
 	    var eHex = e64.toString(CryptoJS.enc.Hex);
 	    
