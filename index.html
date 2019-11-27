@@ -45,9 +45,8 @@
 		
 		var key = CryptoJS.enc.Hex.parse(padString(passphrase));
 		var iv = CryptoJS.enc.Hex.parse(padString(passphrase));
-		var paddedMessage = padString(message);
 
-	    var encrypted = CryptoJS.AES.encrypt(paddedMessage, key, {iv:iv}).toString(CryptoJS.enc.Utf8);
+	    var encrypted = CryptoJS.AES.encrypt(message, key, {iv:iv});
 	    var e64 = CryptoJS.enc.Base64.parse(encrypted.toString());
 	    var eHex = e64.toString(CryptoJS.enc.Hex);
 	    
