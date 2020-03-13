@@ -38,8 +38,26 @@
 
 		return source;
 	}
+
+	function generateKey(key) {
+	    var md5hashKey = (CryptoJS.MD5(key)).toString();
+	    var truncatedKey = md5hashKey;
+
+	    if (md5hashKey.length > 16) {
+		truncatedKey = md5hashKey.substring(0, 16);
+	    }
+	    
+	    return truncatedKey;
+	}
+
 	function convert() {
 	    var passphrase = document.getElementById("passphrase").value;
+
+		var md5enabled = document.getElementById("md5enabled").checked;
+		if (md5enabled) {
+			passphrase = generateKey(passphrase);
+		}
+		
 	    var message = document.getElementById("input").value;
 		var isHexType = document.getElementById("encryptionTypeHex").checked;
 		
@@ -76,7 +94,15 @@
 						<input class="input100" type="text" name="passphrase" id="passphrase" value="passphrase">
 						<span class="focus-input100"></span>
 					</div>
-					
+					<div class="p-t-13 p-b-9">
+						<div class="p-t-13 p-b-9">
+							<label class="radio-inline" for="md5enabled">
+							<input type="checkbox" value="true" id="md5enabled" checked="true">
+							    MD5 Hash enabled?
+							</label>
+							</input>
+						</div>
+					</div>
 					<div class="p-t-13 p-b-9">
 						<span class="txt1">
 							Text to Encrypt
